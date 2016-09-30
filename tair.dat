@@ -1,0 +1,6 @@
+tair.mastercs=12.0.0.100:5198
+core_workload_insertion_retry_limit=100
+tair.groupname=group_1
+recordcount=1024
+operationcount=1000000
+threadcount=2
