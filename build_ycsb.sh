@@ -11,7 +11,7 @@
 #  REQUIREMENTS: ---
 #          BUGS: ---
 #         NOTES: ---
-#        AUTHOR: Zhiyi Sun (), zhiyisun@msn.com
+#        AUTHOR: Zhiyi Sun (zsun), zhiyisun@msn.com
 #  ORGANIZATION: 
 #       CREATED: 09/20/2016 07:45:20 AM
 #      REVISION:  ---
