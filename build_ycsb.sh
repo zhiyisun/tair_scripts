@@ -21,4 +21,4 @@ set -o nounset                              # Treat unset variables as an error
 
 YCSB=/home/zsun/workspace/code/YCSB
 cd ${YCSB}
-mvn -pl com.yahoo.ycsb:tair-binding -am clean package
+mvn -Dcheckstyle.console=false -pl com.yahoo.ycsb:tair-binding -am clean package

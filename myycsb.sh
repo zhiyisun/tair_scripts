@@ -26,10 +26,11 @@ YCSB_DATA=${YCSB_PARENT_DIR}/tair_scripts/tair.dat
 YCSB_LOG_DIR=${YCSB_PARENT_DIR}/tair_scripts/log
 NUM_OF_YCSB_DEFAULT="1"
 YCSB_WORKLOAD_TYPE="workloadc"
+LOAD="false"
 
 function print_help()
 {
-	printf "myycsb.sh up [-n num-of-ycsb]\n"
+	printf "myycsb.sh up [-n num-of-ycsb] -l\n"
         printf "myycsb.sh clean\n"
 }
 
@@ -45,7 +46,7 @@ then
 	echo "Launch YCSB"
 
 	# Parse arguments
-	TEMP_ARGS=`getopt -o n: --long num-of-ycsb:  -n "$PROGRAM_NAME" -- "$@"`
+	TEMP_ARGS=`getopt -o n:l --long num-of-ycsb:load  -n "$PROGRAM_NAME" -- "$@"`
 
 	if [ $? != 0 ]
 	then
@@ -60,6 +61,9 @@ then
 
 			-n|--num-of-ycsb)
 				NUM_OF_YCSB="$2"; shift 2; continue
+			;;
+			-l|--load)
+				LOAD="true"; shift 1; continue
 			;;
 			--)
 				break
@@ -95,9 +99,12 @@ then
 		cd ${YCSB_DIR}_${i}
 
 		#load data is only needed for the first one.
-		if [ $i = 1 ]
+		if [ "${LOAD}" = "true" ]
 		then
-			./bin/ycsb load tair -P ${YCSB_DIR}_${i}/workloads/${YCSB_WORKLOAD_TYPE} -P ${YCSB_DATA} -s > ${YCSB_LOG_DIR}/load_${i}.dat
+			if [ $i = 1 ]
+			then
+				./bin/ycsb load tair -P ${YCSB_DIR}_${i}/workloads/${YCSB_WORKLOAD_TYPE} -P ${YCSB_DATA} -s > ${YCSB_LOG_DIR}/load_${i}.dat
+			fi
 		fi
 
 		./bin/ycsb run tair -P ${YCSB_DIR}_${i}/workloads/${YCSB_WORKLOAD_TYPE} -P ${YCSB_DATA} -s > ${YCSB_LOG_DIR}/transactions_${i}.dat &
