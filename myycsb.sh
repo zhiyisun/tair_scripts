@@ -20,12 +20,9 @@
 set -o nounset                              # Treat unset variables as an error
 
 PROGRAM_NAME="myycsb.sh"
-YCSB_PARENT_DIR=${HOME}/workspace/code
-YCSB_DIR=${YCSB_PARENT_DIR}/YCSB
-YCSB_DATA=${YCSB_PARENT_DIR}/tair_scripts/tair.dat
-YCSB_LOG_DIR=${YCSB_PARENT_DIR}/tair_scripts/log
+YCSB_PARENT_DIR_DEFAULT=${HOME}/workspace/code
 NUM_OF_YCSB_DEFAULT="1"
-YCSB_WORKLOAD_TYPE="workloadc"
+YCSB_WORKLOAD_TYPE_DEFAULT="workloadc"
 LOAD="false"
 TEMP_DIR=${HOME}/tmp
 
@@ -76,6 +73,20 @@ then
 			;;
 		esac
 	done
+
+	if [ -z ${YCSB_PARENT_DIR+x} ]
+	then
+		YCSB_PARENT_DIR=${YCSB_PARENT_DIR_DEFAULT}
+	fi
+
+	YCSB_DIR=${YCSB_PARENT_DIR}/YCSB
+	YCSB_DATA=${YCSB_PARENT_DIR}/tair_scripts/tair.dat
+	YCSB_LOG_DIR=${YCSB_PARENT_DIR}/tair_scripts/log
+
+	if [ -z ${YCSB_WORKLOAD_TYPE+x} ]
+	then
+		YCSB_WORKLOAD_TYPE=${YCSB_WORKLOAD_TYPE_DEFAULT}
+	fi
 
 	# Set default values if they are not specified in input. 
 	if [ -z ${NUM_OF_YCSB+x} ]

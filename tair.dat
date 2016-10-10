@@ -1,4 +1,5 @@
-tair.mastercs=12.0.0.100:5198
+#tair.mastercs=13.0.0.3:5198
+tair.mastercs=14.0.0.3:5198
 core_workload_insertion_retry_limit=100
 tair.groupname=group_1
 recordcount=1024

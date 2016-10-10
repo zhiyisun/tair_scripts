@@ -19,6 +19,10 @@
 
 set -o nounset                              # Treat unset variables as an error
 
-YCSB=/home/zsun/workspace/code/YCSB
+if [ -z ${YCSB+x} ]
+then
+	YCSB=/home/zsun/workspace/code/YCSB
+fi
+
 cd ${YCSB}
 mvn -Dcheckstyle.console=false -pl com.yahoo.ycsb:tair-binding -am clean package
