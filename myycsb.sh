@@ -20,13 +20,14 @@
 set -o nounset                              # Treat unset variables as an error
 
 PROGRAM_NAME="myycsb.sh"
-YCSB_PARENT_DIR=/home/zsun/workspace/code
+YCSB_PARENT_DIR=${HOME}/workspace/code
 YCSB_DIR=${YCSB_PARENT_DIR}/YCSB
 YCSB_DATA=${YCSB_PARENT_DIR}/tair_scripts/tair.dat
 YCSB_LOG_DIR=${YCSB_PARENT_DIR}/tair_scripts/log
 NUM_OF_YCSB_DEFAULT="1"
 YCSB_WORKLOAD_TYPE="workloadc"
 LOAD="false"
+TEMP_DIR=${HOME}/tmp
 
 function print_help()
 {
@@ -83,9 +84,14 @@ then
 	fi
 
 	#Prepare YCSB 
+	if [ ! -d ${TEMP_DIR} ]
+	then
+		mkdir ${TEMP_DIR}
+	fi
+
 	for (( i=1; i <= ${NUM_OF_YCSB}; i++ ))
 	do
-		cp -rf ${YCSB_DIR} ${YCSB_DIR}_${i}
+		cp -rf ${YCSB_DIR} ${TEMP_DIR}/YCSB_${i}
 	done
 
 	if [ ! -d ${YCSB_LOG_DIR} ]
@@ -96,18 +102,18 @@ then
 	#Start YCSB
 	for (( i=1; i <= ${NUM_OF_YCSB}; i++  ))
 	do
-		cd ${YCSB_DIR}_${i}
+		cd ${TEMP_DIR}/YCSB_${i}
 
 		#load data is only needed for the first one.
 		if [ "${LOAD}" = "true" ]
 		then
 			if [ $i = 1 ]
 			then
-				./bin/ycsb load tair -P ${YCSB_DIR}_${i}/workloads/${YCSB_WORKLOAD_TYPE} -P ${YCSB_DATA} -s > ${YCSB_LOG_DIR}/load_${i}.dat
+				./bin/ycsb load tair -P ./workloads/${YCSB_WORKLOAD_TYPE} -P ${YCSB_DATA} -s > ${YCSB_LOG_DIR}/load_${i}.dat
 			fi
 		fi
 
-		./bin/ycsb run tair -P ${YCSB_DIR}_${i}/workloads/${YCSB_WORKLOAD_TYPE} -P ${YCSB_DATA} -s > ${YCSB_LOG_DIR}/transactions_${i}.dat &
+		./bin/ycsb run tair -P ./workloads/${YCSB_WORKLOAD_TYPE} -P ${YCSB_DATA} -s > ${YCSB_LOG_DIR}/transactions_${i}.dat &
 	done
 
 elif [ ${1} = "clean" ]
@@ -122,8 +128,8 @@ then
 	fi
 
 	#Remove all tair_bin of config server and data server
-	find ${YCSB_PARENT_DIR} -type d -regex ".*YCSB_[0-9]+" -exec rm -rf {} +
-
+	find ${TEMP_DIR}/ -type d -regex ".*YCSB_[0-9]+" -exec rm -rf {} +
+	rm -rf ${TEMP_DIR}
 else
 	print_help
 	exit 1
