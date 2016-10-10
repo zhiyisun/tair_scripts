@@ -94,7 +94,7 @@ function prepare_data_server()
 	sed -i "s/eth0/${DEV_NAME}/g" ${DS_CONF}
 
 	#Replace mdb shm path
-	sed -i "s/mdb_shm_path0/mdb_shm_path$1/g" ${DS_CONF}
+	sed -i "s/mdb_shm_path01/mdb_shm_path$1/g" ${DS_CONF}
 }
 
 
