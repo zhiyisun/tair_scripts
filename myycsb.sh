@@ -128,8 +128,12 @@ then
 	fi
 
 	#Remove all tair_bin of config server and data server
-	find ${TEMP_DIR}/ -type d -regex ".*YCSB_[0-9]+" -exec rm -rf {} +
-	rm -rf ${TEMP_DIR}
+
+	if [ -d ${TEMP_DIR} ]
+	then
+		find ${TEMP_DIR}/ -type d -regex ".*YCSB_[0-9]+" -exec rm -rf {} +
+		rm -rf ${TEMP_DIR}
+	fi
 else
 	print_help
 	exit 1
