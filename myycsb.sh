@@ -105,7 +105,7 @@ then
 
 elif [ ${1} = "clean" ]
 then
-	echo "Stop tair server(s)"
+	echo "Stop YCSB"
 	if [ -x /usr/bin/killall  ]
 	then
 		killall java
