@@ -209,6 +209,7 @@ then
 	do
 		cd ${TAIR_BIN_DS}_${i}
 		./tair.sh start_ds
+#		./tair.sh cachegrind_start_ds
 	done
 
 	#Start config server
