@@ -21,7 +21,7 @@ set -o nounset                              # Treat unset variables as an error
 
 if [ -z ${YCSB+x} ]
 then
-	YCSB=/home/zsun/workspace/code/YCSB
+	YCSB=${YCSB}/workspace/code/YCSB
 fi
 
 cd ${YCSB}
